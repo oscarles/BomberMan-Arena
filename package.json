@@ -1,0 +1,36 @@
+{
+  "name": "bomberman-arena",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bomberman Arena - jeu multijoueur en réseau (monorepo client / serveur / protocole partagé)",
+  "type": "module",
+  "workspaces": [
+    "packages/shared",
+    "packages/server"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "npm run build -w @bomberman/shared && npm run build -w @bomberman/server",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "npm run build -w @bomberman/shared && npm run typecheck -w @bomberman/server",
+    "test": "npm run test -w @bomberman/server",
+    "coverage": "npm run coverage -w @bomberman/server",
+    "dev:server": "npm run dev -w @bomberman/server"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.2",
+    "@vitest/coverage-v8": "^5.0.1",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.8",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.1"
+  }
+}
