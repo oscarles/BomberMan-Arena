@@ -2,6 +2,9 @@
 
 Bomberman multijoueur en réseau (BUT 3 – Qualité de développement). Monorepo TypeScript / Node.js.
 
+📖 **[Documentation technique](./docs/README.md)** : architecture, protocole WebSocket, moteur de
+jeu, lobbies, déploiement.
+
 ## Structure
 
 | Package           | Rôle                                                                       |
@@ -41,8 +44,11 @@ Fait :
 - Tests unitaires (lobby, session, moteur, persistance) et test d'intégration WebSocket bout en bout
   (`MOVE` → `POSITION_UPDATED`, rejet `NOT_HOST`)
 
+- Documentation technique (`docs/`) : architecture, protocole WebSocket, moteur de jeu, lobbies,
+  déploiement, post-mortem (squelette à compléter en fin de projet)
+
 Reste à faire :
 
 - Client Electron / PixiJS, menus, settings, SFX, exécutable natif
-- Documentation technique (architecture, protocole, post-mortem), JSDoc, GitFlow (`develop`, protections, PR à 2 relecteurs)
+- JSDoc, GitFlow (`develop`, protections, PR à 2 relecteurs)
 - Écran d'administration des probabilités d'objets (le `DropTableRepository` est prêt côté serveur)
