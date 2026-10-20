@@ -31,12 +31,18 @@ Fait :
 - Moteur de manche (`Round`) côté serveur : grille avec murs/cubes, spawn dans les coins avec zone dégagée,
   déplacements, bombes, explosions en chaîne, cubes destructibles, objets bonus/malus (rayon, bombes, vitesse,
   bombe surprise, ralentissement), vies, invulnérabilité au spawn/respawn, mort subite en spirale, fin de manche
-- Tirage des objets à partir d'une table de probabilités (`DropTable`)
+- Tirage des objets à partir d'une table de probabilités (`DropTable`), persistée en base SQLite
+  (`node:sqlite`, `packages/server/src/persistence/dropTableRepository.ts`)
+- Lobbies (`packages/server/src/lobby`) : création publique/privée (code d'invitation), réglages hôte bornés,
+  couleur de personnage, promotion d'un nouvel hôte, persistance du salon entre deux parties
+- Session multi-manches (`GameSession`) : enchaîne les manches, calcule les victoires et le classement final
+- Serveur WebSocket (`ws`, `packages/server/src/net/GameServer.ts`) : validation des trames, routage
+  lobby/partie, boucle de jeu centralisée
+- Tests unitaires (lobby, session, moteur, persistance) et test d'intégration WebSocket bout en bout
+  (`MOVE` → `POSITION_UPDATED`, rejet `NOT_HOST`)
 
 Reste à faire :
 
-- Session multi-manches (victoires, leaderboard) et lobbies (public/privé + code, réglages hôte, couleur, persistance)
-- Serveur WebSocket (`ws`) + boucle de jeu, validation des messages, tests d'intégration (`MOVE` → `POSITION_UPDATED`)
-- Persistance BD des probabilités d'apparition des objets (`node:sqlite`)
 - Client Electron / PixiJS, menus, settings, SFX, exécutable natif
 - Documentation technique (architecture, protocole, post-mortem), JSDoc, GitFlow (`develop`, protections, PR à 2 relecteurs)
+- Écran d'administration des probabilités d'objets (le `DropTableRepository` est prêt côté serveur)

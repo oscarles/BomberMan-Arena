@@ -27,4 +27,6 @@ export const GAME_CONFIG = {
   shrinkIntervalMs: 250,
   /** Pause entre la fin d'une manche et la suivante (ou la fin de partie). */
   intermissionMs: 3000,
+  /** Intervalle de la boucle de jeu serveur (simulation de toutes les parties en cours). */
+  tickIntervalMs: 50,
 } as const;
