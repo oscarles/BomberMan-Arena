@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-electron/
+release/
+coverage/
+data/
+*.db
+*.db-journal
+*.log
+.env
+.DS_Store
