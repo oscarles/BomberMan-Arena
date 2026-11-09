@@ -8,6 +8,7 @@ Index de la documentation technique du projet (cahier des charges §5.1).
 | [protocole-websocket.md](./protocole-websocket.md) | Format JSON des messages WebSocket, référence complète + séquences       |
 | [moteur-de-jeu.md](./moteur-de-jeu.md)             | Fonctionnement du moteur de manche (grille, bombes, objets, mort subite) |
 | [lobbies-et-parties.md](./lobbies-et-parties.md)   | Salons, réglages, cycle de vie d'une partie, session multi-manches       |
+| [client.md](./client.md)                           | Client Electron + PixiJS : MVC, écrans, mode hors ligne, sécurité, tests |
 | [deploiement.md](./deploiement.md)                 | Variables d'environnement, Docker, déploiement du serveur                |
 | [post-mortem.md](./post-mortem.md)                 | Bilan qualitatif (à compléter en fin de projet)                          |
 
@@ -25,4 +26,4 @@ docker compose up --build # alternative conteneurisée
 
 Voir le [README](../README.md) à la racine pour l'avancement fonctionnel détaillé. En résumé : le
 moteur de jeu, les lobbies et le serveur WebSocket sont fonctionnels et testés côté serveur ; le
-client (Electron + PixiJS) reste à développer.
+client (Electron + PixiJS) est développé et testable hors ligne (voir [client.md](./client.md)).
