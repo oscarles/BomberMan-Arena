@@ -4,7 +4,8 @@ COPY package.json package-lock.json tsconfig.base.json ./
 COPY packages/shared packages/shared
 COPY packages/server packages/server
 RUN npm ci
-RUN npm run build
+# Seuls shared et server sont buildés : le client n'est pas dockérisé (exécutable natif).
+RUN npm run build -w @bomberman/shared && npm run build -w @bomberman/server
 
 FROM node:24-alpine
 WORKDIR /app

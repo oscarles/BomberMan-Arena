@@ -1,58 +1,80 @@
-# BomberMan-Arena
+# 💣 Bomberman Arena
 
-Bomberman multijoueur en réseau (BUT 3 – Qualité de développement). Monorepo TypeScript / Node.js.
+Bomberman multijoueur en réseau, de 2 à 4 joueurs. Projet BUT 3 « Qualité de développement ».
 
-📖 **[Documentation technique](./docs/README.md)** : architecture, protocole WebSocket, moteur de
-jeu, lobbies, déploiement.
+Le **serveur** Node.js gère toute la partie (collisions, explosions, bonus, fin de partie). Le
+**client** Electron + PixiJS affiche l'état reçu et envoie les actions du joueur. Les deux
+communiquent en **WebSocket** (JSON).
 
-## Structure
+📖 [Documentation technique](./docs/README.md) · [Protocole WebSocket](./docs/protocole-websocket.md)
+· [Architecture](./docs/architecture.md)
 
-| Package           | Rôle                                                                                                     |
-| ----------------- | -------------------------------------------------------------------------------------------------------- |
-| `packages/shared` | Types, constantes et protocole WebSocket (JSON) partagés client / serveur                                |
-| `packages/server` | Serveur autoritaire : moteur de jeu (collisions, explosions, mort subite…)                               |
-| `packages/client` | Client Electron + PixiJS (MVC / bus d'événements), interface utilisable hors ligne via un serveur simulé |
+## Démarrage rapide
+
+Prérequis : **Node.js ≥ 24**, `make` (sous Windows, utiliser WSL).
+
+```bash
+make install   # installe les dépendances
+make dev       # lance le serveur + le client
+```
+
+Ouvrir ensuite **http://localhost:5173**. Le serveur écoute sur `ws://localhost:8080`.
+`Ctrl+C` arrête tout.
 
 ## Commandes
 
-```bash
-npm install
-npm run build        # shared puis server
-npm run lint         # ESLint
-npm run dev:client:mock # client en mode hors ligne (serveur simulé)
-npm run start:client    # application Electron
-npm run format:check # Prettier
-npm test             # Vitest
-npm run coverage
-docker compose up --build   # serveur (port 8080, GET /health)
+`make help` affiche la liste complète.
+
+### Lancer le jeu
+
+| Commande         | Effet                                                          |
+| ---------------- | -------------------------------------------------------------- |
+| `make dev`       | Serveur (rechargement auto) + client dans le navigateur        |
+| `make start`     | Build complet, puis serveur + application de bureau Electron   |
+| `make dev-mock`  | Client seul, contre un serveur simulé (aucun serveur à lancer) |
+| `make docker-up` | Serveur seul dans Docker (`make docker-down` pour l'arrêter)   |
+
+Pour lancer un seul côté : `make dev-server`, `make dev-client`, `make start-server`,
+`make start-client`.
+
+### Qualité
+
+| Commande        | Effet                                            |
+| --------------- | ------------------------------------------------ |
+| `make check`    | Lint + format + tests (à lancer avant chaque PR) |
+| `make test`     | Tests Vitest (serveur + client)                  |
+| `make coverage` | Tests avec couverture, comme la CI               |
+| `make lint`     | ESLint                                           |
+| `make format`   | Corrige le formatage avec Prettier               |
+| `make build`    | Compile `shared`, `server` et `client`           |
+| `make clean`    | Supprime les fichiers de build                   |
+
+## Structure
+
+```
+packages/
+  shared/   types et protocole WebSocket partagés (le contrat client ↔ serveur)
+  server/   serveur autoritaire : moteur de jeu, salons, réseau, SQLite
+  client/   application Electron + PixiJS (MVC + bus d'événements)
+docs/       documentation technique
 ```
 
-## État d'avancement (`feat/base_du_jeu`)
+## Configuration du serveur
 
-Fait :
+| Variable  | Défaut                | Rôle                         |
+| --------- | --------------------- | ---------------------------- |
+| `PORT`    | `8080`                | Port HTTP / WebSocket        |
+| `DB_PATH` | `./data/bomberman.db` | Base SQLite (tables de drop) |
 
-- Monorepo, ESLint + Prettier, Vitest, CI GitHub Actions (build, lint, format, tests), Dockerfile + docker-compose
-- Protocole WebSocket typé (`packages/shared/src/protocol.ts`)
-- Moteur de manche (`Round`) côté serveur : grille avec murs/cubes, spawn dans les coins avec zone dégagée,
-  déplacements, bombes, explosions en chaîne, cubes destructibles, objets bonus/malus (rayon, bombes, vitesse,
-  bombe surprise, ralentissement), vies, invulnérabilité au spawn/respawn, mort subite en spirale, fin de manche
-- Tirage des objets à partir d'une table de probabilités (`DropTable`), persistée en base SQLite
-  (`node:sqlite`, `packages/server/src/persistence/dropTableRepository.ts`)
-- Lobbies (`packages/server/src/lobby`) : création publique/privée (code d'invitation), réglages hôte bornés,
-  couleur de personnage, promotion d'un nouvel hôte, persistance du salon entre deux parties
-- Session multi-manches (`GameSession`) : enchaîne les manches, calcule les victoires et le classement final
-- Serveur WebSocket (`ws`, `packages/server/src/net/GameServer.ts`) : validation des trames, routage
-  lobby/partie, boucle de jeu centralisée
-- Tests unitaires (lobby, session, moteur, persistance) et test d'intégration WebSocket bout en bout
-  (`MOVE` → `POSITION_UPDATED`, rejet `NOT_HOST`)
+Vérifier que le serveur tourne : `curl http://localhost:8080/health`.
 
-- Documentation technique (`docs/`) : architecture, protocole WebSocket, moteur de jeu, lobbies,
-  déploiement, post-mortem (squelette à compléter en fin de projet)
+## Contribuer
 
-- Client (`packages/client`) : écrans accueil, salons, salle d'attente, partie (PixiJS), pause et résultats ; settings, SFX synthétisés, mode hors ligne ([documentation](./docs/client.md))
+GitFlow : `main` ← `release/*` ← `develop` ← `feature/*`.
 
-Reste à faire :
+1. Créer une branche `feature/ma-tache` depuis `develop` à jour.
+2. Écrire des commits au format [Conventional Commits](https://www.conventionalcommits.org/fr/)
+   (`feat(server): …`, `fix(client): …`).
+3. Lancer `make check`, puis ouvrir une PR vers `develop` (2 approbations, dont 1 DevOps/Qualité).
 
-- Exécutable natif généré en CI (`npm run package -w @bomberman/client` fonctionne en local), état « prêt » du protocole
-- JSDoc, GitFlow (`develop`, protections, PR à 2 relecteurs)
-- Écran d'administration des probabilités d'objets (le `DropTableRepository` est prêt côté serveur)
+La CI (GitHub Actions) exécute build → lint → format → tests à chaque push et PR.
