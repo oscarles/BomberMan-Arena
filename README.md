@@ -7,11 +7,11 @@ jeu, lobbies, déploiement.
 
 ## Structure
 
-| Package           | Rôle                                                                       |
-| ----------------- | -------------------------------------------------------------------------- |
-| `packages/shared` | Types, constantes et protocole WebSocket (JSON) partagés client / serveur  |
-| `packages/server` | Serveur autoritaire : moteur de jeu (collisions, explosions, mort subite…) |
-| `packages/client` | _À faire_ : Electron + PixiJS, pattern MVC / bus d'événements, UI mockable |
+| Package           | Rôle                                                                                                     |
+| ----------------- | -------------------------------------------------------------------------------------------------------- |
+| `packages/shared` | Types, constantes et protocole WebSocket (JSON) partagés client / serveur                                |
+| `packages/server` | Serveur autoritaire : moteur de jeu (collisions, explosions, mort subite…)                               |
+| `packages/client` | Client Electron + PixiJS (MVC / bus d'événements), interface utilisable hors ligne via un serveur simulé |
 
 ## Commandes
 
@@ -19,6 +19,8 @@ jeu, lobbies, déploiement.
 npm install
 npm run build        # shared puis server
 npm run lint         # ESLint
+npm run dev:client:mock # client en mode hors ligne (serveur simulé)
+npm run start:client    # application Electron
 npm run format:check # Prettier
 npm test             # Vitest
 npm run coverage
@@ -47,8 +49,10 @@ Fait :
 - Documentation technique (`docs/`) : architecture, protocole WebSocket, moteur de jeu, lobbies,
   déploiement, post-mortem (squelette à compléter en fin de projet)
 
+- Client (`packages/client`) : écrans accueil, salons, salle d'attente, partie (PixiJS), pause et résultats ; settings, SFX synthétisés, mode hors ligne ([documentation](./docs/client.md))
+
 Reste à faire :
 
-- Client Electron / PixiJS, menus, settings, SFX, exécutable natif
+- Exécutable natif généré en CI (`npm run package -w @bomberman/client` fonctionne en local), état « prêt » du protocole
 - JSDoc, GitFlow (`develop`, protections, PR à 2 relecteurs)
 - Écran d'administration des probabilités d'objets (le `DropTableRepository` est prêt côté serveur)

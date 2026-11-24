@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "electron",
+    "outDir": "dist-electron",
+    "lib": ["ES2023"],
+    "types": ["node"]
+  },
+  "include": ["electron/*.ts", "electron/*.cts"]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "@bomberman/client",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Client de bureau (Electron + PixiJS) : affichage et saisie, aucune logique de jeu",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "dev:mock": "vite --open \"/?mock=1\"",
+    "build": "tsc -p tsconfig.json --noEmit && vite build && tsc -p tsconfig.electron.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.electron.json --noEmit",
+    "start": "npm run build && electron .",
+    "package": "npm run build && electron-builder --win portable",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.15.3",
+    "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "pixi.js": "^8.22.0"
+  },
+  "build": {
+    "appId": "fr.upjv.bomberman-arena",
+    "productName": "Bomberman Arena",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "dist-electron/**",
+      "package.json"
+    ],
+    "win": {
+      "target": "portable"
+    }
+  }
+}

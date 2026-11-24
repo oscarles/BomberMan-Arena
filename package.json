@@ -6,20 +6,24 @@
   "type": "module",
   "workspaces": [
     "packages/shared",
-    "packages/server"
+    "packages/server",
+    "packages/client"
   ],
   "engines": {
     "node": ">=24"
   },
   "scripts": {
-    "build": "npm run build -w @bomberman/shared && npm run build -w @bomberman/server",
+    "build": "npm run build -w @bomberman/shared && npm run build -w @bomberman/server && npm run build -w @bomberman/client",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "npm run build -w @bomberman/shared && npm run typecheck -w @bomberman/server",
-    "test": "npm run test -w @bomberman/server",
-    "coverage": "npm run coverage -w @bomberman/server",
-    "dev:server": "npm run dev -w @bomberman/server"
+    "typecheck": "npm run build -w @bomberman/shared && npm run typecheck -w @bomberman/server && npm run typecheck -w @bomberman/client",
+    "test": "npm run test -w @bomberman/server && npm run test -w @bomberman/client",
+    "coverage": "npm run coverage -w @bomberman/server && npm run coverage -w @bomberman/client",
+    "dev:server": "npm run dev -w @bomberman/server",
+    "dev:client": "npm run dev -w @bomberman/client",
+    "dev:client:mock": "npm run dev:mock -w @bomberman/client",
+    "start:client": "npm run start -w @bomberman/client"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

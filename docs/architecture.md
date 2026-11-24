@@ -7,7 +7,7 @@ graph TB
     subgraph Monorepo
         shared["@bomberman/shared<br/>types + protocole WebSocket"]
         server["@bomberman/server<br/>moteur de jeu + réseau"]
-        client["@bomberman/client<br/>Electron + PixiJS (à venir)"]
+        client["@bomberman/client<br/>Electron + PixiJS"]
     end
     shared --> server
     shared --> client
